@@ -1,0 +1,99 @@
+# Unit III — Data Processing Tools: Pig
+
+## Step 1: Create the input file
+
+nano simple_logs.txt
+
+### Enter the data
+
+site1	10	100	2026-10-01
+site2	11	150	2026-10-01
+site1	10	200	2026-10-01
+site3	12	120	2026-10-02
+site2	10	180	2026-10-02
+site1	11	100	2026-10-02
+
+### Save the file
+
+Ctrl + O
+Enter
+Ctrl + X
+
+## Step 2: Create HDFS directory
+
+hdfs dfs -mkdir -p /data/pig/simple_logs
+
+## Step 3: Copy file to HDFS
+
+hdfs dfs -put simple_logs.txt /data/pig/simple_logs/
+
+## Step 4: Verify the file in HDFS
+
+hdfs dfs -ls /data/pig/simple_logs
+
+## Step 5: View the file contents
+
+hdfs dfs -cat /data/pig/simple_logs/simple_logs.txt
+
+## Step 6: Start Pig
+
+pig
+
+## Step 7: Load the data
+
+logs = LOAD '/data/pig/simple_logs/simple_logs.txt'
+USING PigStorage('\t')
+AS (site:chararray, hour_of_day:int, page_views:int, data_date:chararray);
+
+## Step 8: Display the data
+
+DUMP logs;
+
+## Program 1: Calculate total views per hour per day
+
+### 1. Group records by date and hour
+
+hour_day_group = GROUP logs BY (data_date, hour_of_day);
+
+### 2. Calculate total views
+
+hour_day_views = FOREACH hour_day_group
+GENERATE group.data_date,
+         group.hour_of_day,
+         SUM(logs.page_views);
+
+### 3. Display the result
+
+DUMP hour_day_views;
+
+## Program 2: Calculate total views per day
+
+### 1. Group records by date
+
+day_group = GROUP logs BY data_date;
+
+### 2. Calculate total views
+
+day_views = FOREACH day_group
+GENERATE group,
+         SUM(logs.page_views);
+
+### 3. Display the result
+
+DUMP day_views;
+
+## Program 3: Calculate total views per hour across all days
+
+### 1. Group records by hour
+
+hour_group = GROUP logs BY hour_of_day;
+
+### 2. Calculate total views
+
+hour_views = FOREACH hour_group
+GENERATE group,
+         SUM(logs.page_views);
+
+### 3. Display the result
+
+DUMP hour_views;
