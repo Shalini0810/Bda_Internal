@@ -1,0 +1,52 @@
+# Big Data Lab — Unit I: HDFS (Storage)
+
+## Program 1: Create a directory structure in HDFS and move files between the local file system and HDFS
+
+### 1. Create a local file using Linux commands
+
+echo "Hello Hadoop" > file1.txt
+
+
+### 2. Create a directory in HDFS
+
+hdfs dfs -mkdir -p /user/cloudera/bigdata/input
+
+### 3. Move a local file to HDFS
+
+hdfs dfs -put file1.txt /user/cloudera/bigdata/input/
+
+### 4. Copy a file from HDFS to the local file system
+
+hdfs dfs -get /user/cloudera/bigdata/input/file1.txt downloaded.txt
+
+### 5. Move a file within HDFS
+
+hdfs dfs -mv /user/cloudera/bigdata/input/file1.txt /user/cloudera/bigdata/file1.txt
+
+## Program 2: View files, directories, and file contents in HDFS
+
+### 1. View files and directories in HDFS
+
+hdfs dfs -ls /user/cloudera/bigdata
+
+### 2. View the contents of the input directory
+
+hdfs dfs -ls /user/cloudera/bigdata/input
+
+### 3. Display the contents of a file in HDFS
+
+hdfs dfs -cat /user/cloudera/bigdata/input/file1.txt
+
+## Program 3: Get files from HDFS to the local disk
+
+### 1. Download a file from HDFS
+
+hdfs dfs -get /user/cloudera/bigdata/input/file1.txt downloaded.txt
+
+### 2. Alternative command
+
+hdfs dfs -copyToLocal /user/cloudera/bigdata/input/file1.txt downloaded.txt
+
+### 3. View the downloaded file locally
+
+cat downloaded.txt
