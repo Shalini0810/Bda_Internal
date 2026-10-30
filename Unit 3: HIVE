@@ -1,0 +1,85 @@
+# Unit III — Data Processing Tools: Hive
+
+## Part A: Create the updated table
+
+CREATE TABLE user_data (
+    data_date STRING,
+    user_id STRING,
+    age INT,
+    state STRING,
+    gender STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+## Part B: Insert records separately
+
+### Record 1
+
+INSERT INTO TABLE user_data
+SELECT '2026-10-01', 'U01', 21, 'CA', 'M';
+
+### Record 2
+
+INSERT INTO TABLE user_data
+SELECT '2026-10-02', 'U02', 25, 'NY', 'F';
+
+### Record 3
+
+INSERT INTO TABLE user_data
+SELECT '2026-10-03', 'U03', 21, 'CA', 'F';
+
+### Record 4
+
+INSERT INTO TABLE user_data
+SELECT '2026-10-04', 'U04', 30, 'TX', 'M';
+
+### Record 5
+
+INSERT INTO TABLE user_data
+SELECT '2026-10-05', 'U05', 25, 'NY', 'M';
+
+### Record 6
+
+INSERT INTO TABLE user_data
+SELECT '2026-10-06', 'U06', 35, 'CA', 'F';
+
+## Part C: Verify the inserted records
+
+SELECT * FROM user_data;
+
+## Part D: Calculate minimum, maximum and unique values
+
+### 1. Age statistics
+
+SELECT
+    MIN(age) AS min_age,
+    MAX(age) AS max_age,
+    COUNT(DISTINCT age) AS unique_ages
+FROM user_data;
+
+### 2. State statistics
+
+SELECT
+    MIN(state) AS min_state,
+    MAX(state) AS max_state,
+    COUNT(DISTINCT state) AS unique_states
+FROM user_data;
+
+### 3. Gender statistics
+
+SELECT
+    MIN(gender) AS min_gender,
+    MAX(gender) AS max_gender,
+    COUNT(DISTINCT gender) AS unique_genders
+FROM user_data;
+
+## Part E: Count records per state
+
+SELECT
+    state,
+    COUNT(*) AS state_count
+FROM user_data
+GROUP BY state
+ORDER BY state;
