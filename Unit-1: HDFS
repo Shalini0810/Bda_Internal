@@ -1,0 +1,143 @@
+# Big Data Lab — Unit I: HDFS (Storage)
+
+Unit I has three programs in your syllabus. Below are the relevant commands, explanations, and examples for each, using Cloudera.
+
+## Program 1: Create a directory structure in HDFS and move files between the local file system and HDFS
+
+Aim: To create directories in HDFS, create local files, and transfer files between the local file system and HDFS.
+
+### 1. Create a local file using Linux commands
+
+```
+echo "Hello Hadoop" > file1.txt
+```
+
+This creates `file1.txt` on the local file system and writes `Hello Hadoop` into it.
+
+### 2. Create a directory in HDFS
+
+```
+hdfs dfs -mkdir -p /user/cloudera/bigdata/input
+```
+
+- `hdfs dfs` executes HDFS commands.
+- `-mkdir` creates a directory.
+- `-p` creates parent directories if they do not exist.
+
+### 3. Move a local file to HDFS
+
+```
+hdfs dfs -put file1.txt /user/cloudera/bigdata/input/
+```
+
+This uploads the local file to HDFS. The original local file remains in place.
+
+You can also use:
+
+```
+hdfs dfs -copyFromLocal file1.txt /user/cloudera/bigdata/input/
+```
+
+Both commands copy a local file into HDFS.
+
+### 4. Copy a file from HDFS to the local file system
+
+```
+hdfs dfs -get /user/cloudera/bigdata/input/file1.txt downloaded.txt
+```
+
+This downloads the file from HDFS and saves it locally as `downloaded.txt`.
+
+### 5. Move a file within HDFS
+
+```
+hdfs dfs -mv /user/cloudera/bigdata/input/file1.txt /user/cloudera/bigdata/file1.txt
+```
+
+This moves the file from one HDFS directory to another. Unlike `-get`, it does not download the file to your computer.
+
+Important difference
+
+| Command | Purpose                    |
+| ------- | -------------------------- |
+| `-put`  | Local file → HDFS          |
+| `-get`  | HDFS → Local file          |
+| `-cp`   | Copy within HDFS           |
+| `-mv`   | Move or rename within HDFS |
+
+Result: Created an HDFS directory structure and transferred files between the local file system and HDFS.
+
+## Program 2: View files, directories, and file contents in HDFS
+
+Aim: To list the contents of HDFS directories and display the contents of files stored in HDFS.
+
+### 1. View files and directories in HDFS
+
+```
+hdfs dfs -ls /user/cloudera/bigdata
+```
+
+This lists the files and directories inside the specified HDFS directory.
+
+To view the contents of its `input` directory:
+
+```
+hdfs dfs -ls /user/cloudera/bigdata/input
+```
+
+### 2. Display the contents of a file in HDFS
+
+```
+hdfs dfs -cat /user/cloudera/bigdata/input/file1.txt
+```
+
+Output:
+
+```
+Hello Hadoop
+```
+
+The `-cat` command displays the file's contents in the terminal without downloading it.
+
+Important difference
+
+- `-ls` displays files and directories.
+- `-cat` displays file contents.
+
+Result: Successfully listed HDFS files and directories and displayed the contents of a file stored in HDFS.
+
+## Program 3: Get files from HDFS to the local disk
+
+Aim: To copy a file from HDFS to the local file system for further processing.
+
+### 1. Download a file from HDFS
+
+```
+hdfs dfs -get /user/cloudera/bigdata/input/file1.txt downloaded.txt
+```
+
+This copies `file1.txt` from HDFS to the local file `downloaded.txt`.
+
+### 2. Alternative command
+
+```
+hdfs dfs -copyToLocal /user/cloudera/bigdata/input/file1.txt downloaded.txt
+```
+
+`-get` and `-copyToLocal` perform the same basic operation.
+
+### 3. View the downloaded file locally
+
+```
+cat downloaded.txt
+```
+
+Output:
+
+```
+Hello Hadoop
+```
+
+Here, `cat` is a Linux command because `downloaded.txt` is now on the local file system.
+
+Result: Successfully copied a file from HDFS to the local disk and verified its contents.
