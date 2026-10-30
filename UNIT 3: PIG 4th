@@ -1,0 +1,46 @@
+# Big Data Lab — Unit III: Pig Word Count Program
+
+## 1. Create the Input Text File
+
+nano wordcount.txt
+
+hello hadoop
+hello pig
+hadoop pig
+hello hadoop
+
+## 2. Create a Directory in HDFS
+
+hdfs dfs -mkdir -p /data/pig/wordcount
+
+## 3. Upload the Local File to HDFS
+
+hdfs dfs -put wordcount.txt /data/pig/wordcount/
+
+## 4. Display the File in HDFS
+
+hdfs dfs -cat /data/pig/wordcount/wordcount.txt
+
+## 5. Start Pig
+
+pig
+
+## 6. Load the Text File
+
+lines = LOAD '/data/pig/wordcount/wordcount.txt' USING TextLoader() AS (line:chararray);
+
+## 7. Tokenize the Lines into Words
+
+words = FOREACH lines GENERATE FLATTEN(TOKENIZE(line)) AS word;
+
+## 8. Group Identical Words
+
+grouped_words = GROUP words BY word;
+
+## 9. Count the Occurrences of Each Word
+
+word_count = FOREACH grouped_words GENERATE group, COUNT(words);
+
+## 10. Display the Word Count
+
+DUMP word_count;
