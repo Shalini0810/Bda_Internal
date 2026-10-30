@@ -1,0 +1,141 @@
+# Big Data Lab — Sqoop
+
+## Part 1: Check MySQL
+
+mysql --version
+
+## Part 2: Open MySQL
+
+mysql -u root -p
+
+Enter your MySQL password when prompted.
+
+## Part 3: Create MySQL Database
+
+CREATE DATABASE college;
+
+USE college;
+
+## Part 4: Create Student Table
+
+CREATE TABLE student (
+    id INT,
+    name VARCHAR(50),
+    age INT,
+    department VARCHAR(50)
+);
+
+## Part 5: Insert Student Data
+
+INSERT INTO student VALUES
+(1, 'Rahul', 20, 'CSE'),
+(2, 'Priya', 21, 'ECE'),
+(3, 'Anil', 20, 'CSE'),
+(4, 'Sneha', 22, 'IT');
+
+## Part 6: Display Student Records
+
+SELECT * FROM student;
+
+## Part 7: Exit MySQL
+
+exit;
+
+## Part 8: Sqoop Import — MySQL to Hadoop/Hive
+
+sqoop import \
+--connect jdbc:mysql://localhost:3306/college \
+--username root \
+--password YOUR_PASSWORD \
+--table student \
+--hive-import \
+--hive-table student \
+--m 1
+
+## Part 9: Verify Imported Data in HDFS
+
+### 1. List HDFS directory
+
+hdfs dfs -ls /user/hive/warehouse/student
+
+### 2. Display file contents
+
+hdfs dfs -cat /user/hive/warehouse/student/part-m-00000
+
+## Part 10: Verify Imported Data in Hive
+
+### 1. Start Hive
+
+hive
+
+### 2. Display tables
+
+SHOW TABLES;
+
+### 3. Display student records
+
+SELECT * FROM student;
+
+### 4. Describe the table
+
+DESCRIBE student;
+
+### 5. Exit Hive
+
+exit;
+
+## Part 11: Create Destination Table in MySQL
+
+### 1. Open MySQL
+
+mysql -u root -p
+
+### 2. Select database
+
+USE college;
+
+### 3. Create destination table
+
+CREATE TABLE student_export (
+    id INT,
+    name VARCHAR(50),
+    age INT,
+    department VARCHAR(50)
+);
+
+### 4. Verify destination table
+
+SELECT * FROM student_export;
+
+### 5. Exit MySQL
+
+exit;
+
+## Part 12: Sqoop Export — Hadoop to MySQL
+
+sqoop export \
+--connect jdbc:mysql://localhost:3306/college \
+--username root \
+--password YOUR_PASSWORD \
+--table student_export \
+--export-dir /user/hive/warehouse/student \
+--input-fields-terminated-by ',' \
+--m 1
+
+## Part 13: Verify Exported Data in MySQL
+
+### 1. Open MySQL
+
+mysql -u root -p
+
+### 2. Select database
+
+USE college;
+
+### 3. Display exported records
+
+SELECT * FROM student_export;
+
+### 4. Exit MySQL
+
+exit;
