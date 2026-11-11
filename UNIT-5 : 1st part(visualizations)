@@ -1,0 +1,33 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+data=sns.load_dataset('iris')
+data.head()
+
+plt.figure(figsize=(8,5))
+sns.histplot(data['sepal_length'],kde=True,color='blue')
+plt.title('Histogram')
+plt.xlabel('Sepal length')
+plt.ylabel('freq')
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.boxplot(x='species',y='sepal_length',data=data)
+plt.title('Boxplot')
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.regplot(x='sepal_length',y='petal_length',data=data,color='blue')
+plt.title('Scatter plot')
+plt.show()
+
+plt.figure(figsize=(8,5))
+num_df=data.drop(columns=['species'])
+sns.heatmap(num_df.corr(),annot=True,cmap='coolwarm')
+plt.title('Heatmap')
+plt.show()
+
+fig=px.scatter_3d(data,x='sepal_length',y='sepal_width',z='petal_length',color='species')
+fig.show()
